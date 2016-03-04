@@ -1,2 +1,2 @@
 # dins
-dodecahedron icosahedron discretized navier stokes solver
+Dodecahedron icosahedron discretized k-space Navier Stokes solver
