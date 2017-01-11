@@ -61,7 +61,7 @@ void shell_network::setup_connections(){
 }
 
 void shell_network::add_shell(shell *sh){
-  int id;
+  int id,antnum;
   if(shells.empty())
     id=-1;
   else
@@ -76,6 +76,21 @@ void shell_network::add_shell(shell *sh){
       id=nodes.back()->gid();
     (*nd)->set_global_id(id+1);
     nodes.push_back(*nd);
-    //    kni.push_back(nodes.kni());
+    if(sh->is_icosa()){
+      antnum=6;
+    }
+    else if(sh->is_dodeca()){
+      antnum=10;
+    }
+    else{
+      printf("ananin ami!\n");
+    }
+    if((*nd)->id()<antnum){
+	(*nd)->set_anti_gid((*nd)->gid()+antnum);
+      }
+    else{
+      (*nd)->set_anti_gid((*nd)->gid()-antnum);
+    }
+  //    kni.push_back(nodes.kni());
   }
 }

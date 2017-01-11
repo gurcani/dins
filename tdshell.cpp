@@ -116,14 +116,23 @@ void tdshell::operator()(vector<vector<complex<double> > > const &u, vector<vect
 void tdshell::operator()(matrix<complex<double> > const &u, matrix<complex<double> > &dudt, const double t){
   vector<node*> *nodes;
   node_connection *ncon;
-  int np,npp;
+  int np,npp,aid;
   complex<double> I(0.0,-1.0);
+  //  double kn;
+  //  vector<double> kni;
+  //  double nukdot=1e3;
+  //  double nuconj=1e3;
   nodes=snw->get_nodesp();
   // sum over j,k,l
   for(int n=0;n<nodes->size();n++){
+    //    kn=(*nodes)[n]->k();
+    //    kni=(*nodes)[n]->kni();
+    //    aid=(*nodes)[n]->anti_gid();
+    //    complex<double> k_dot_u=kni[0]*u(n,0)+kni[1]*u(n,1)+kni[2]*u(n,2);
     for(int i=0;i<3;i++){
-      dudt(n,i)=-d(n,i)*u(n,i)+f(n,i);
+      dudt(n,i)=-d(n,i)*u(n,i)+f(n,i);//-nukdot*(k_dot_u*kni[i])/kn/kn-nuconj*(u(n,i)-u(aid,i));
       for(int l=0;l<(*nodes)[n]->num_connections();l++){
+	//	std::cout<<u(n,i)-u(aid,i)<<"\n";
 	ncon=(*nodes)[n]->connection(l);
 	np=ncon->l1->gid();
 	npp=ncon->l2->gid();
@@ -153,6 +162,8 @@ void tdshell::run(){
     tim.report();
     t+=dtout;
     cout<<"t="<<t<<"\n";
+    network()->symmetrize_shells(ui);
+    network()->remove_divergence(ui);
     datfile->append(ui);
   }
 }

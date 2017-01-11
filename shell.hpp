@@ -32,10 +32,13 @@ public:
   virtual bool is_dodeca(){return false;};
   void symmetrize( matrix<complex<double > > &);
   void force(complex<double> f, matrix<complex<double> > &fm){
+    cout<<"nodes.size()="<<nodes.size()<<"\n";
     for(int l=0;l<nodes.size()/2;l++){
+      cout<<"gid="<<nodes[l]->gid()<<"\n";
       fm(nodes[l]->gid(),0)=fm(nodes[l]->gid(),1)=fm(nodes[l]->gid(),2)=f;
     }
     for(int l=nodes.size()/2;l<nodes.size();l++){
+      cout<<"gid*="<<nodes[l]->gid()<<"\n";
       fm(nodes[l]->gid(),0)=fm(nodes[l]->gid(),1)=fm(nodes[l]->gid(),2)=conj(f);
     }
   };

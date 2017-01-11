@@ -16,8 +16,8 @@ using boost::numeric::ublas::matrix;
 
 int main(void){
   tdshell tds("test.h5",40,1.0);
-  tds.set_params(1.0,1.0e-13,1.0e3);
-  tds.set_integration_params(0.0,100.0,1.0e-5,1.0e-2);
+  tds.set_params(1.0,1.0e-15,0.0);
+  tds.set_integration_params(0.0,1000.0,1.0e-5,1.0e-1);
   matrix<complex<double> > *vec=tds.get_ui();
   tds.hdf5fp()->write("k",tds.network()->get_kni());
     // initialization has to be symmetric...
@@ -31,11 +31,18 @@ int main(void){
   cout<<"sz1="<<vec->size1()<<",sz2="<<vec->size2()<<"\n";
   tds.network()->symmetrize_shells((*vec));
   //  tds.force_shell(2,complex<double>(0.1,0.1));
-  matrix<complex<double> > f = matrix<complex<double> >(vec->size1(),vec->size2());
-  tds.network()->force_shell(2,complex<double>(0.01,0.01),f);
-  tds.network()->force_shell(3,complex<double>(0.01,-0.01),f);
+  tds.network()->remove_divergence((*vec));
+  
+  matrix<complex<double> > f=matrix<complex<double> >(vec->size1(),vec->size2(),complex<double>(0.0,0.0));
+  tds.network()->force_shell(3,complex<double>(0.01,0.01),f);
+  tds.network()->force_shell(4,complex<double>(0.01,-0.01),f);
+//  tds.network()->symmetrize_shells(f);
+  tds.network()->remove_divergence(f);
   tds.set_forcing(f);
-  cout<<"f(22,0)="<<tds.get_forcing()(22,0)<<"\n";
+  
+  cout<<"f(15,0)="<<tds.get_forcing()(45,0)<<"\n";
+  cout<<"f(25,0)="<<tds.get_forcing()(55,0)<<"\n";
+  //  cout<<*vec;
   //  tds.datwrite();
   tds.run();
   tds.close();

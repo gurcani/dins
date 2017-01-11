@@ -20,6 +20,7 @@ typedef struct cartesian_pos_{
 class node{
   int global_id;
   int shell_id;
+  int anti_node_gid;
   spherical_angle angles;
   double radius;
   cartesian_pos position;
@@ -39,6 +40,7 @@ public:
   spherical_angle node_angles(){ return angles; }
   cartesian_pos node_position(){ return position; }
   void set_global_id(int n){global_id=n;};
+  void set_anti_gid(int n){anti_node_gid=n;};
   int gid(){return global_id;};
   int id(){return shell_id;};
   double theta(){ return angles.theta;}
@@ -52,6 +54,7 @@ public:
   int num_connections(){return connected_nodes.size();}
   void add_connection(node *, node *);
   node_connection* connection(int n){return connected_nodes[n];};
+  int anti_gid(){return anti_node_gid;};
 };
 
 #define PI 3.141592653589793238463
