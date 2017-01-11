@@ -24,7 +24,7 @@ void hdf5datfile::open_file(const char *filename){
   }
 }
 /*
-void hdf5datfile::init_write(vector<complex<double> > const &vec,const char*varname,int szxpar,int szypar){
+void hdf5datfile::init_write(vector<complex<double> > const &vec,const char*varname,hsize_t szxpar,hsize_t szypar){
   szx=szxpar;
   szy=szypar;
   dtype=H5Tcreate (H5T_COMPOUND, sizeof (complex<double>));
@@ -57,7 +57,7 @@ void hdf5datfile::init_write(const char *varname, vector<vector<complex<double >
 }
 */
 
-void hdf5datfile::init_write(const char*varname,int szxpar, int szypar){
+void hdf5datfile::init_write(const char*varname,hsize_t szxpar, hsize_t szypar){
   szx=szxpar;
   szy=szypar;
   dtype=H5Tcreate (H5T_COMPOUND, sizeof (complex<double>));
@@ -88,8 +88,8 @@ void hdf5datfile::init_write(const char *varname, matrix<complex<double > > cons
 }
 
 void hdf5datfile::write(const char *varname, matrix<double> const &vec){
-  int wx=vec.size1();
-  int wy=vec.size2();
+  hsize_t wx=vec.size1();
+  hsize_t wy=vec.size2();
   hsize_t dims[]={1,wy,wx};
   hsize_t maxdims[]={H5S_UNLIMITED,wy,wx};
   hid_t space_id=H5Screate_simple(3,dims,maxdims);

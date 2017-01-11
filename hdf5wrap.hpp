@@ -15,15 +15,15 @@ private:
   hid_t data;
   hid_t par_id;
   int rank;
-  int nt;
-  int szx,szy;
+  hsize_t nt;
+  hsize_t szx,szy;
 public:
   hdf5datfile(const char *filename);
   ~hdf5datfile();
   void open_file(const char *filename);
   //  void write(vector<double>)
   void init_write(vector<double> const &, const char *);
-  void init_write(const char *, int, int);
+  void init_write(const char *, hsize_t, hsize_t);
   void init_write(const char *, vector<vector<complex<double> > > const &);
   void init_write(const char *, matrix<complex<double> > const &);
   void write(const char *, matrix<double> const &);

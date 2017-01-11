@@ -55,9 +55,14 @@ AC_CHECK_LIB([boost_timer],[main],[],[echo "Error! You need boost timer libs."
 
 # Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS([boost/array.hpp])
-AC_CHECK_HEADERS([boost/numeric/odeint.hpp])
-AC_CHECK_HEADERS([omp.h],[CXXFLAGS+=" -fopenmp"],[])
+
+AC_LANG_PUSH([C++])
+AC_CHECK_HEADER([boost/numeric/odeint.hpp],[],[AC_MSG_ERROR(
+[Boost::Numeric::Odeint headers not found. Make sure you have Boost installed.])])
+AC_CHECK_HEADER([boost/array.hpp], [], [AC_MSG_ERROR(
+[Boost::Array headers not found. Make sure you have Boost installed.])])
+AC_CHECK_HEADER([omp.h],[CXXFLAGS+=" -fopenmp"],[])
+AC_LANG_POP([C++])
 
 # Checks for typedefs, structures, and compiler characteristics.
 
